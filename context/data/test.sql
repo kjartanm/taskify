@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS test;
+
+CREATE TABLE test (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE
+);

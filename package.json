@@ -1,0 +1,121 @@
+{
+  "name": "taskify",
+  "version": "0.0.1",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kjartanm/taskify.git"
+  },
+  "homepage": "https://github.com/kjartanm/taskify",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite dev",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:e2e": "cucumber-js",
+    "test:e2e:headless": "cucumber-js --profile headless",
+    "test:e2e:staging": "cucumber-js --config cucumber.config.staging.js",
+    "test:e2e:staging:headless": "cucumber-js --config cucumber.config.staging.js --profile headless",
+    "test:component": "vitest run --config vitest.config.component.ts",
+    "test:all": "npm run test:coverage && npm run test:component && npm run test:e2e:headless",
+    "test:staging": "npm run test:coverage && npm run test:component && npm run test:e2e:staging:headless",
+    "ci:test": "npm run test:coverage && npm run test:component && npm run test:e2e:headless",
+    "ci:quality": "npm run format:check && npm run lint && npm run check",
+    "ci:build": "npm run ci:quality && npm run ci:test && npm run build",
+    "prepare": "husky",
+    "wrangler:dev": "wrangler dev --persist-to=./local-db",
+    "wrangler:deploy": "wrangler deploy",
+    "wrangler:deploy:staging": "wrangler deploy --env staging",
+    "wrangler:deploy:production": "wrangler deploy --env production",
+    "dev:with-db": "wrangler dev --persist-to=./local-db",
+    "db:migrate": "wrangler d1 migrations apply --local",
+    "db:migrate:staging": "wrangler d1 migrations apply --env staging",
+    "db:migrate:production": "wrangler d1 migrations apply --env production",
+    "db:seed": "wrangler d1 execute --local --file=./context/data/taskify-sample-data.sql",
+    "db:seed:staging": "wrangler d1 execute --env staging --file=./context/data/taskify-sample-data.sql",
+    "db:reset": "wrangler d1 execute --local --file=./context/data/setup-database.sql",
+    "db:setup": "npm run db:migrate && npm run db:seed",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "secrets:list": "wrangler secret list",
+    "secrets:list:staging": "wrangler secret list --env staging",
+    "secrets:list:production": "wrangler secret list --env production",
+    "kv:list": "wrangler kv:namespace list",
+    "config:validate": "node -e \"require('./src/lib/config/environment.ts').validateEnvironmentConfig()\""
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-cloudflare": "^4.9.0",
+    "@sveltejs/kit": "^2.22.2",
+    "@sveltejs/vite-plugin-svelte": "^5.0.4",
+    "@types/eslint": "^9.6.1",
+    "@types/node": "^22.7.5",
+    "@cloudflare/workers-types": "^4.20241106.0",
+    "@cucumber/cucumber": "^11.0.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/svelte": "^5.2.3",
+    "@testing-library/user-event": "^14.5.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/ui": "^2.1.8",
+    "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.5",
+    "drizzle-kit": "^0.26.2",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-svelte": "^2.46.0",
+    "globals": "^15.12.0",
+    "husky": "^9.1.7",
+    "jsdom": "^25.0.1",
+    "lint-staged": "^15.2.10",
+    "msw": "^2.6.4",
+    "postcss": "^8.5.1",
+    "prettier": "^3.4.2",
+    "prettier-plugin-svelte": "^3.3.2",
+    "puppeteer": "^23.8.0",
+    "svelte": "^5.13.0",
+    "svelte-check": "^4.0.8",
+    "tailwindcss": "^3.4.16",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vite": "^6.0.2",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.97.0"
+  },
+  "dependencies": {
+    "daisyui": "^4.12.14",
+    "drizzle-orm": "^0.36.4"
+  },
+  "lint-staged": {
+    "*.{js,ts,svelte}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,html,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.test.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.steps.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "overrides": {
+    "rollup-plugin-inject": "@rollup/plugin-inject@^5.0.5",
+    "sourcemap-codec": "@jridgewell/sourcemap-codec@^1.5.0"
+  },
+  "type": "module"
+}
