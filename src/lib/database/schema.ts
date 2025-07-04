@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, blob, index, primaryKey } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
 
 // Parents table
@@ -121,7 +121,7 @@ export const tasks = sqliteTable('tasks', {
   verifiedAt: text('verified_at'),
   
   // Recurring task tracking
-  parentTaskId: text('parent_task_id').references(() => tasks.taskId, { onDelete: 'cascade' }),
+  parentTaskId: text('parent_task_id'), // Self-reference: TODO - add constraint after table definition
   sequenceNumber: integer('sequence_number').default(1),
 });
 

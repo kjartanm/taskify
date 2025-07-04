@@ -1,13 +1,12 @@
 import { unstable_dev } from 'wrangler';
 import type { Unstable_DevWorker } from 'wrangler';
-import { afterAll, beforeAll, describe, it, expect } from 'vitest';
-import { createDatabaseClient } from '../database/client';
+import { afterAll, beforeAll } from 'vitest';
 import type { Database } from '../database/client';
 
 // Database testing utilities
 export class DatabaseTestHelper {
   private worker: Unstable_DevWorker | null = null;
-  private db: Database | null = null;
+  //private db: Database | null = null;
 
   async setup() {
     // Start local Wrangler dev server for testing
@@ -59,10 +58,10 @@ export class DatabaseTestHelper {
   }
 
   async withTransaction<T>(callback: (db: Database) => Promise<T>): Promise<T> {
-    const db = this.getDatabase();
+    const database = this.getDatabase();
     // Note: D1 doesn't support transactions yet, so this is a placeholder
     // In the future, you would start a transaction here
-    return await callback(db);
+    return await callback(database);
   }
 }
 
@@ -73,7 +72,7 @@ export function createDatabaseTestHelper(): DatabaseTestHelper {
 
 // Test utilities for common database operations
 export const testUtils = {
-  async createTestParent(db: Database) {
+  async createTestParent(/*db: Database*/) {
     // Helper to create a test parent
     const testParent = {
       parentId: 'test-parent-' + Date.now(),

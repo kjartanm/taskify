@@ -1,7 +1,6 @@
 module.exports = {
   default: {
-    require: ['ts-node/register'],
-    requireModule: ['tsconfig-paths/register'],
+    requireModule: ['ts-node/register', 'tsconfig-paths/register'],
     format: ['progress-bar', 'html:src/test/reports/cucumber-staging-report.html'],
     formatOptions: {
       snippetInterface: 'async-await'
@@ -16,8 +15,7 @@ module.exports = {
     }
   },
   headless: {
-    require: ['ts-node/register'],
-    requireModule: ['tsconfig-paths/register'],
+    requireModule: ['ts-node/register', 'tsconfig-paths/register'],
     format: ['progress-bar', 'html:src/test/reports/cucumber-staging-report.html'],
     formatOptions: {
       snippetInterface: 'async-await'

@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 /**
@@ -24,8 +24,7 @@ export class MigrationRunner {
    * Get list of migration files in order
    */
   private getMigrationFiles(): string[] {
-    const fs = require('fs');
-    const files = fs.readdirSync(this.migrationPath);
+    const files = readdirSync(this.migrationPath);
     return files
       .filter((file: string) => file.endsWith('.sql'))
       .sort(); // Files should be named with numeric prefixes for ordering
@@ -52,7 +51,7 @@ export class MigrationRunner {
         console.log(`Would execute migration ${file} with ${migrationSql.split('\n').length} lines`);
         
         // Example of how you might run this:
-        // const { spawn } = require('child_process');
+        // import { spawn } from 'child_process';
         // const tempFile = `/tmp/${file}`;
         // writeFileSync(tempFile, migrationSql);
         // const wranglerArgs = ['d1', 'execute', `--${environment}`, `--file=${tempFile}`];
@@ -93,8 +92,8 @@ export class MigrationRunner {
     const filename = `${timestamp}_${name}.sql`;
     const filepath = join(this.migrationPath, filename);
     
-    const fs = require('fs');
-    fs.writeFileSync(filepath, content);
+    // Ensure migration directory exists
+    writeFileSync(filepath, content);
     
     console.log(`Created migration: ${filename}`);
     return filename;
@@ -110,8 +109,8 @@ export const migrationUtils = {
    * Generate migration from existing SQL schema
    */
   generateFromSchema(schemaPath: string): string {
-    const fs = require('fs');
-    const schema = fs.readFileSync(schemaPath, 'utf-8');
+    // Read schema file content
+    const schema = readFileSync(schemaPath, 'utf-8');
     
     // Add migration header
     const migrationHeader = `-- Generated migration from ${schemaPath}
@@ -127,8 +126,8 @@ export const migrationUtils = {
    * Generate seed data migration
    */
   generateSeedMigration(seedDataPath: string): string {
-    const fs = require('fs');
-    const seedData = fs.readFileSync(seedDataPath, 'utf-8');
+    // Read seed data file content
+    const seedData = readFileSync(seedDataPath, 'utf-8');
     
     const migrationHeader = `-- Seed data migration from ${seedDataPath}
 -- Created: ${new Date().toISOString()}
