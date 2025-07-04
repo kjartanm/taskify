@@ -53,6 +53,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
+      - name: Setup local database for testing
+        run: |
+          npx wrangler d1 migrations apply --local --env development
+          npx wrangler d1 execute --local --env development --file=./context/data/taskify-sample-data.sql
+        
       - name: Run unit tests
         run: npm run test:coverage
         
@@ -82,6 +87,14 @@ jobs:
           
       - name: Install dependencies
         run: npm ci
+        
+      - name: Install Puppeteer browsers
+        run: npx puppeteer browsers install chrome
+            
+      - name: Setup local database for testing
+        run: |
+          npx wrangler d1 migrations apply --local --env development
+          npx wrangler d1 execute --local --env development --file=./context/data/taskify-sample-data.sql
         
       - name: Build application
         run: npm run build
@@ -116,10 +129,15 @@ jobs:
       - name: Run npm audit
         run: npm audit --audit-level=high
         
-      - name: Run CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
         with:
           languages: javascript
+          
+      - name: Run CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript"
 
   build:
     name: Build Application

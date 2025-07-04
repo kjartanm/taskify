@@ -1,4 +1,17 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
-npx lint-staged
+# Change to the project root directory
+cd "$(dirname "$0")/.."
+
+# Try Windows batch file first (for Windows environments)
+if [ -f ".husky/pre-commit.cmd" ] && [ -n "$WINDIR" ]; then
+    cmd.exe /c ".husky/pre-commit.cmd"
+elif command -v npm >/dev/null 2>&1; then
+    npm run lint-staged
+elif [ -x "./node_modules/.bin/lint-staged" ]; then
+    ./node_modules/.bin/lint-staged
+else
+    echo "Error: Cannot find npm or lint-staged"
+    echo "Please ensure Node.js is installed and run 'npm install'"
+    exit 1
+fi

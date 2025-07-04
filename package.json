@@ -32,6 +32,7 @@
     "ci:quality": "npm run format:check && npm run lint && npm run check",
     "ci:build": "npm run ci:quality && npm run ci:test && npm run build",
     "prepare": "husky",
+    "lint-staged": "lint-staged",
     "wrangler:dev": "wrangler dev --persist-to=./local-db",
     "wrangler:deploy": "wrangler deploy",
     "wrangler:deploy:staging": "wrangler deploy --env staging",
